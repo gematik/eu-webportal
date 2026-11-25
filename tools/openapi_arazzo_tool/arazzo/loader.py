@@ -1,0 +1,73 @@
+# Copyright (Change Date see Readme), gematik GmbH
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+# ******
+#
+# For additional notes and disclaimer from gematik and in case of changes
+# by gematik, find details in the "Readme" file.
+
+"""Secure local loading and version validation for Arazzo documents."""
+
+import re
+from pathlib import Path
+from typing import Any
+
+import yaml
+
+from ..errors import ExitCode, ToolError
+from .model import ArazzoDocument
+
+SUPPORTED_VERSION_PATTERN = re.compile(r"^1\.1\.\d+$")
+
+
+def load_arazzo_document(path: str) -> ArazzoDocument:
+    """Load and version-check one local Arazzo 1.1.x document."""
+    file_path = Path(path)
+    if not file_path.exists():
+        raise ToolError(
+            "ARAZZO_FILE_NOT_FOUND",
+            f"Arazzo document does not exist: {path}",
+            ExitCode.VALIDATION_ERROR,
+            str(file_path),
+        )
+
+    try:
+        with file_path.open(encoding="utf-8") as stream:
+            raw: Any = yaml.safe_load(stream)
+    except (OSError, yaml.YAMLError) as error:
+        raise ToolError(
+            "ARAZZO_SYNTAX_INVALID",
+            f"Unable to parse Arazzo document: {error}",
+            ExitCode.VALIDATION_ERROR,
+            str(file_path),
+        ) from error
+
+    if not isinstance(raw, dict):
+        raise ToolError(
+            "ARAZZO_SYNTAX_INVALID",
+            "Arazzo document root must be a mapping.",
+            ExitCode.VALIDATION_ERROR,
+            str(file_path),
+        )
+
+    version = raw.get("arazzo")
+    if not isinstance(version, str) or not SUPPORTED_VERSION_PATTERN.match(version):
+        raise ToolError(
+            "ARAZZO_VERSION_UNSUPPORTED",
+            f"Arazzo version {version!r} is not supported. Supported versions: 1.1.x.",
+            ExitCode.VALIDATION_ERROR,
+            str(file_path),
+        )
+
+    return ArazzoDocument(path=str(file_path), version=version, raw=raw)

@@ -1,0 +1,10 @@
+openapi: 3.1.0
+info:
+  title: Self Ref Service
+  version: 1.0.0
+components:
+  schemas:
+    Widget:
+      type: object
+    WidgetAlias:
+      $ref: '#/components/schemas/Widget'

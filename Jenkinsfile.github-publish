@@ -1,0 +1,159 @@
+@Library('gematik-jenkins-shared-library') _
+
+def checkoutSourceTag(String tagName, sourceScm) {
+    checkout([
+        $class: 'GitSCM',
+        branches: [[name: "refs/tags/${tagName}"]],
+        userRemoteConfigs: sourceScm.userRemoteConfigs.collect { remote ->
+            [
+                url: remote.url,
+                credentialsId: remote.credentialsId,
+                name: remote.name,
+                refspec: "+refs/tags/${tagName}:refs/tags/${tagName}"
+            ]
+        },
+        doGenerateSubmoduleConfigurations: false,
+        submoduleCfg: [],
+        extensions: sourceScm.extensions
+    ])
+}
+
+pipeline {
+    agent none
+
+    parameters {
+        string(
+            name: 'GITLAB_TAG',
+            defaultValue: '',
+            description: 'Source GitLab tag to validate and publish'
+        )
+        booleanParam(
+            name: 'DRY_RUN',
+            defaultValue: true,
+            description: 'List the filtered export files without contacting or pushing to GitHub'
+        )
+        string(
+            name: 'GITHUB_PUBLISH_JOB',
+            defaultValue: 'NCPeH-eu_webportal-GitHub_publish',
+            description: 'Publisher job running publishToGitHub.jenkinsfile. Relative to this job folder or absolute with a leading slash'
+        )
+    }
+
+    options {
+        skipDefaultCheckout()
+        disableConcurrentBuilds()
+        buildDiscarder(logRotator(numToKeepStr: '10'))
+        timeout(time: 45, unit: 'MINUTES')
+        timestamps()
+    }
+
+    stages {
+        stage('Validate tag and export filters') {
+            agent { label 'k8-backend-small' }
+            steps {
+                script {
+                    def tagName = params.GITLAB_TAG?.trim()
+                    if (!tagName || !(tagName ==~ /^v\d+\.\d+\.\d+(?:-[0-9A-Za-z.-]+)?-b\.\d+$/)) {
+                        error("Unsupported source tag for GitHub publication: ${tagName}")
+                    }
+
+                    checkoutSourceTag(tagName, scm)
+                }
+
+                sh(
+                    label: 'Require private-data exclusions in tagged source',
+                    script: '''set -eu
+for required_rule in \\
+  'frontend/ism/internal/' \\
+  'specs/ism/examples/' \\
+  'docs/adr/ADR-0008-ism-html-kontrakt.md' \\
+  'docs/ism-xsd-pruefung.md' \\
+  'docs/workflows/arazzo-review.md' \\
+  'docs/workflows/spezifikationsluecken-ism.md' \\
+  'docs/workflows/ism-antworten.md' \\
+  'docs/meetings/' \\
+  '**/README.internal.md'
+do
+  if ! grep -Fxq "$required_rule" .githubignore; then
+    echo "Missing required export exclusion: $required_rule" >&2
+    exit 1
+  fi
+done'''
+                )
+            }
+        }
+
+        stage('Dry-run filtered GitHub export') {
+            when {
+                expression { params.DRY_RUN }
+            }
+            agent { label 'k8-backend-small' }
+            steps {
+                dir('dry-run-source') {
+                    script {
+                        checkoutSourceTag(params.GITLAB_TAG.trim(), scm)
+                    }
+                }
+
+                dir('dry-run-target') {
+                    sh 'git init --quiet'
+                    withEnv([
+                        'SOURCE_DIR=../dry-run-source',
+                        'TARGET_DIR=.'
+                    ]) {
+                        sh(libraryResource('copySourceFilesToFeatureBranch.sh'))
+                    }
+                    sh(libraryResource('applyGithubIgnoreRules.sh'))
+                    sh(
+                        label: 'List files in filtered GitHub export',
+                        script: '''set -eu
+git add -A
+git ls-files | tee ../github-sync-dry-run-files.txt
+printf '\\nTotal files in filtered export: '
+git ls-files | wc -l'''
+                    )
+                }
+
+                archiveArtifacts(
+                    artifacts: 'github-sync-dry-run-files.txt',
+                    fingerprint: true
+                )
+            }
+        }
+
+        stage('Dispatch GitHub source publication') {
+            when {
+                expression { !params.DRY_RUN }
+            }
+            steps {
+                script {
+                    def tagName = params.GITLAB_TAG?.trim()
+                    if (!tagName || !(tagName ==~ /^v\d+\.\d+\.\d+(?:-[0-9A-Za-z.-]+)?-b\.\d+$/)) {
+                        error("Unsupported source tag for GitHub publication: ${tagName}")
+                    }
+
+                    def publisherJob = params.GITHUB_PUBLISH_JOB?.trim()
+                    if (!publisherJob) {
+                        error('Set GITHUB_PUBLISH_JOB to the Jenkins job running publishToGitHub.jenkinsfile.')
+                    }
+
+                    build(
+                        job: publisherJob,
+                        parameters: [
+                            string(name: 'GITLAB_TAG', value: tagName),
+                            text(name: 'COMMIT_MESSAGE', value: "Publish filtered sources ${tagName}"),
+                            string(name: 'REMOTE_BRANCH', value: 'main'),
+                            string(name: 'GITHUB_TAG', value: tagName),
+                            string(name: 'GITHUB_PROJECT_NAME', value: 'eu-webportal'),
+                            string(name: 'GEMATIK_PROJECT_NAME', value: 'ncpeh/poc/eu-webportal.git'),
+                            string(name: 'AUTOMATIC_MERGE', value: 'NO'),
+                            booleanParam(name: 'FEATURE_FLAG_USE_NEW_RBAC_LAYOUT', value: true)
+                        ],
+                        wait: true,
+                        propagate: true
+                    )
+                }
+            }
+        }
+    }
+}

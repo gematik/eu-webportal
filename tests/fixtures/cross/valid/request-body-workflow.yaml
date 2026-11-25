@@ -1,0 +1,17 @@
+arazzo: 1.1.0
+info:
+  title: Request body workflow
+  version: 1.0.0
+sourceDescriptions:
+  - name: widgets
+    url: ./parameters-openapi.yaml
+    type: openapi
+workflows:
+  - workflowId: create-widget
+    steps:
+      - stepId: create
+        operationId: widgets.create
+        requestBody:
+          contentType: application/json
+          payload:
+            name: Widget

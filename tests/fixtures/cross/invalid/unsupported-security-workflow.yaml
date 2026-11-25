@@ -1,0 +1,15 @@
+arazzo: 1.1.0
+info:
+  title: Unsupported security workflow
+  version: 1.0.0
+sourceDescriptions:
+  - name: widgets
+    url: ./unsupported-security-openapi.yaml
+    type: openapi
+workflows:
+  - workflowId: secured-widgets
+    steps:
+      - stepId: list
+        operationId: widgets.list
+      - stepId: create
+        operationId: widgets.create

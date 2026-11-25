@@ -1,0 +1,8 @@
+openapi: 3.1.0
+info:
+  title: Nested Ref Service
+  version: 1.0.0
+components:
+  schemas:
+    WidgetRef:
+      $ref: '../../../domain/schemas.yaml#/components/schemas/Widget'

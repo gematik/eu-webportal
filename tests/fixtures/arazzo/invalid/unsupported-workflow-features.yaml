@@ -1,0 +1,25 @@
+arazzo: 1.1.0
+info:
+  title: Unsupported Workflow Features
+  version: 1.0.0
+sourceDescriptions:
+  - name: widgets
+    url: ./widgets.yaml
+    type: openapi
+workflows:
+  - workflowId: create-widget
+    dependsOn:
+      - prepare-widget
+    parameters:
+      - name: X-Correlation-Id
+        in: header
+        value: example
+    successActions:
+      - name: complete
+        type: end
+    failureActions:
+      - name: abort
+        type: end
+    steps:
+      - stepId: create
+        operationId: widgets.create

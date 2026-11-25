@@ -1,0 +1,10 @@
+openapi: 3.1.0
+info:
+  title: Invalid Schema Override API
+  version: 1.0.0
+paths: {}
+components:
+  schemas:
+    Widget:
+      $schema: dialect-without-uri-scheme
+      type: string

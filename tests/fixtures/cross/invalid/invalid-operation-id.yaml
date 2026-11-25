@@ -1,0 +1,22 @@
+arazzo: 1.1.0
+info:
+  title: Invalid operation identifiers
+  version: 1.0.0
+sourceDescriptions:
+  - name: listApi
+    url: ../valid/openapi.yaml
+    type: openapi
+  - name: readApi
+    url: ../valid/scoped-openapi.yaml
+    type: openapi
+workflows:
+  - workflowId: invalid-operations
+    steps:
+      - stepId: unknown
+        operationId: missing.operation
+      - stepId: ambiguous
+        operationId: widgets.list
+      - stepId: unknown-source
+        operationId: $sourceDescriptions.missing.widgets.read
+      - stepId: unknown-operation
+        operationId: $sourceDescriptions.readApi.missing.operation

@@ -1,0 +1,33 @@
+arazzo: 1.1.0
+info:
+  title: Valid Step Inputs
+  version: 1.0.0
+sourceDescriptions:
+  - name: widgets
+    url: ./widgets.yaml
+    type: openapi
+workflows:
+  - workflowId: create-widget
+    inputs:
+      type: object
+      required:
+        - correlationId
+      properties:
+        correlationId:
+          type: string
+        active:
+          type: boolean
+    steps:
+      - stepId: create
+        operationId: widgets.create
+        parameters:
+          - name: X-Correlation-Id
+            in: header
+            value: $inputs.correlationId
+          - name: active
+            in: query
+            value: true
+        requestBody:
+          contentType: application/json
+          payload:
+            name: Widget

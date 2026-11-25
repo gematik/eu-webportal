@@ -1,0 +1,35 @@
+arazzo: 1.1.0
+info:
+  title: Expression dependencies
+  version: 1.0.0
+sourceDescriptions:
+  - name: widgets
+    url: ./openapi.yaml
+    type: openapi
+workflows:
+  - workflowId: shared
+    inputs:
+      type: object
+      properties:
+        locale:
+          type: string
+    steps:
+      - stepId: list
+        operationId: widgets.list
+        outputs:
+          result: $statusCode
+    outputs:
+      result: $steps.list.outputs.result
+  - workflowId: consumer
+    inputs:
+      type: object
+      properties:
+        locale:
+          type: string
+    steps:
+      - stepId: list
+        operationId: widgets.list
+        outputs:
+          currentInput: $inputs.locale
+          sharedInput: $workflows.shared.inputs.locale
+          sharedOutput: $workflows.shared.outputs.result

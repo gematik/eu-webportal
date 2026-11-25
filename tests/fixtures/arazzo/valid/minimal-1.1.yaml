@@ -1,0 +1,14 @@
+arazzo: 1.1.0
+info:
+  title: Minimal Valid Workflow
+  version: 1.0.0
+sourceDescriptions:
+  - name: petstore
+    url: ./petstore.yaml
+    type: openapi
+    x-preserved-but-uninterpreted: true
+workflows:
+  - workflowId: list-pets
+    steps:
+      - stepId: list-pets-step
+        operationId: petstore.listPets

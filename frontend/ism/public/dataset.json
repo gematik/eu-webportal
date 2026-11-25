@@ -1,0 +1,22 @@
+{
+  "countries": [
+    {
+      "code": "XA",
+      "name": "Aveloria",
+      "source": "sources/xa.xml",
+      "flag": "flags/01_aveloria_flag.svg"
+    },
+    {
+      "code": "XB",
+      "name": "Belvaria",
+      "source": "sources/xb.xml",
+      "flag": "flags/02_belvaria_flag.svg"
+    },
+    {
+      "code": "XC",
+      "name": "Caldoria",
+      "source": "sources/xc.xml",
+      "flag": "flags/03_caldoria_flag.svg"
+    }
+  ]
+}

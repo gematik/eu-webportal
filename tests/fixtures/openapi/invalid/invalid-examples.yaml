@@ -1,0 +1,40 @@
+openapi: 3.1.0
+info:
+  title: Invalid Examples API
+  version: 1.0.0
+components:
+  examples:
+    BothValues:
+      value:
+        id: widget-1
+      externalValue: ./examples/widget.json
+    Scalar: invalid
+  parameters:
+    BadExamples:
+      name: query
+      in: query
+      examples: []
+      schema:
+        type: string
+paths:
+  /widgets:
+    post:
+      operationId: createWidget
+      requestBody:
+        content:
+          application/json:
+            example:
+              id: widget-1
+            examples:
+              duplicate:
+                value:
+                  id: widget-2
+      responses:
+        '201':
+          description: Created
+          headers:
+            Location:
+              example: /widgets/1
+              examples:
+                duplicate:
+                  value: /widgets/2

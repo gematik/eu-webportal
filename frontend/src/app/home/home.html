@@ -1,0 +1,14 @@
+<section aria-labelledby="applications-heading">
+  <h1 id="applications-heading">Fachliche Anwendungen</h1>
+  <ul class="application-tiles">
+    @for (application of applications; track application.name) {
+      <li>
+        @if (application.route; as route) {
+          <a class="application-tile" [routerLink]="route">{{ application.name }}</a>
+        } @else {
+          <span class="application-tile">{{ application.name }}</span>
+        }
+      </li>
+    }
+  </ul>
+</section>

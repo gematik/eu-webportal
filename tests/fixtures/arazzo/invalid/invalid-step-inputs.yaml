@@ -1,0 +1,33 @@
+arazzo: 1.1.0
+info:
+  title: Invalid Step Inputs
+  version: 1.0.0
+sourceDescriptions:
+  - name: widgets
+    url: ./widgets.yaml
+    type: openapi
+workflows:
+  - workflowId: create-widget
+    steps:
+      - stepId: create
+        operationId: widgets.create
+        parameters:
+          - name: ""
+            in: query
+          - name: duplicate
+            in: unknown
+            value: one
+          - name: duplicate
+            in: query
+            value: two
+          - name: duplicate
+            in: query
+            value: three
+        requestBody:
+          contentType: ""
+      - stepId: parameters-not-array
+        operationId: widgets.list
+        parameters: invalid
+      - stepId: body-not-map
+        operationId: widgets.delete
+        requestBody: invalid

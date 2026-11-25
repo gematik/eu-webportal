@@ -1,0 +1,31 @@
+arazzo: 1.1.0
+info:
+  title: Invalid Outputs and Criteria
+  version: 1.0.0
+sourceDescriptions:
+  - name: widgets
+    url: ./widgets.yaml
+    type: openapi
+workflows:
+  - workflowId: create-widget
+    outputs: invalid
+    steps:
+      - stepId: create
+        operationId: widgets.create
+        outputs:
+          "": $response.body#/id
+          missingExpression: ""
+        successCriteria: []
+      - stepId: list
+        operationId: widgets.list
+        successCriteria:
+          - invalid
+          - condition: ""
+      - stepId: delete
+        operationId: widgets.delete
+        outputs: []
+        successCriteria: invalid
+      - stepId: invalid-output-name
+        operationId: widgets.invalidOutputName
+        outputs:
+          invalid output: $response.body

@@ -1,0 +1,16 @@
+arazzo: 1.1.0
+info:
+  title: Scoped widget workflow
+  version: 1.0.0
+sourceDescriptions:
+  - name: listApi
+    url: ./openapi.yaml
+    type: openapi
+  - name: readApi
+    url: ./scoped-openapi.yaml
+    type: openapi
+workflows:
+  - workflowId: read-widget
+    steps:
+      - stepId: read
+        operationId: $sourceDescriptions.readApi.widgets.read

@@ -1,0 +1,15 @@
+openapi:
+  - ../api-ncpeh/src/interfaces/ncpeh-proxy/http-proxy/I_ISM_Service.yaml
+  - ../api-ncpeh/src/interfaces/ncpeh-proxy/http-proxy/I_HTTP-Proxy_basic.yaml
+  - ../api-ncpeh/src/interfaces/ncpeh-fd/I_ISM_Service_FD.yaml
+
+arazzo:
+  - ../api-ncpeh/src/workflows/wf-ism-bereitstellen.yaml
+
+security:
+  allowedRefRoots:
+    - ../api-ncpeh
+
+mock:
+  bindHost: 127.0.0.1
+  port: 8080

@@ -1,0 +1,14 @@
+arazzo: 1.1.0
+info:
+  title: Valid Step Timeout
+  version: 1.0.0
+sourceDescriptions:
+  - name: widgets
+    url: ./widgets.yaml
+    type: openapi
+workflows:
+  - workflowId: timed-widget
+    steps:
+      - stepId: read
+        operationId: widgets.read
+        timeout: 5000

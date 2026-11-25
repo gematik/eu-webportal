@@ -1,0 +1,76 @@
+# ##############################################################################
+# Angular & Node
+# ##############################################################################
+# Abhängigkeiten
+node_modules/
+/dist/
+/.angular/
+__pycache__/
+*.egg-info/
+.venv/
+
+# Lokale Umgebungsvariablen
+.env
+.env.local
+
+# Log-Dateien
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# ##############################################################################
+# IntelliJ IDEA / WebStorm (JetBrains)
+# ##############################################################################
+# Ganzer Projektordner (enthält lokale Einstellungen und History)
+.idea/
+
+# Falls du bestimmte globale IntelliJ-Dateien ausschließen willst:
+*.iml
+*.ipr
+*.iws
+
+# ##############################################################################
+# Betriebssysteme & Editoren
+# ##############################################################################
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# VS Code (falls Teammitglieder VS Code nutzen)
+.vscode/
+
+# ##############################################################################
+# Testing (Optional, falls Berichte generiert werden)
+# ##############################################################################
+/coverage/
+/cypress/screenshots/
+/cypress/videos/
+
+# Private datasets and documentation must not enter the public export.
+frontend/ism/internal/
+specs/ism/examples/
+docs/adr/ADR-0008-ism-html-kontrakt.md
+docs/ism-xsd-pruefung.md
+docs/workflows/arazzo-review.md
+docs/workflows/spezifikationsluecken-ism.md
+docs/workflows/ism-antworten.md
+docs/meetings/
+**/README.internal.md
+
+# Generated runtime data and local build outputs are rebuilt from public sources.
+frontend/ism/public/generated/
+frontend/public/ism/
+frontend/public/ism-demo/
+frontend/dist/
+frontend/.angular/
+node_modules/
+frontend/node_modules/
+.venv/
+

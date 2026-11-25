@@ -1,0 +1,23 @@
+arazzo: 1.1.0
+info:
+  title: Valid Dependencies
+  version: 1.0.0
+sourceDescriptions:
+  - name: widgets
+    url: ./widgets.yaml
+    type: openapi
+workflows:
+  - workflowId: prepare
+    steps:
+      - stepId: create
+        operationId: widgets.create
+  - workflowId: publish
+    dependsOn:
+      - prepare
+    steps:
+      - stepId: validate
+        operationId: widgets.validate
+      - stepId: publish
+        operationId: widgets.publish
+        dependsOn:
+          - validate

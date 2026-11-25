@@ -1,0 +1,45 @@
+arazzo: 1.1.0
+info:
+  title: Runtime expressions
+  version: 1.0.0
+sourceDescriptions:
+  - name: widgets
+    url: ./widgets.yaml
+    type: openapi
+workflows:
+  - workflowId: create-widget
+    inputs:
+      type: object
+      properties:
+        locale:
+          type: string
+    steps:
+      - stepId: create
+        operationId: widgets.create
+        parameters:
+          - name: locale
+            in: query
+            value: $inputs.locale
+          - name: filter
+            in: query
+            value: "locale={$inputs.locale}&active=true"
+        requestBody:
+          contentType: application/json
+          payload:
+            locale: $inputs.locale
+        successCriteria:
+          - condition: $statusCode == 201
+        outputs:
+          id: $response.body#/id
+          location: $response.header.Location
+      - stepId: read
+        operationId: widgets.read
+        parameters:
+          - name: id
+            in: path
+            value: $steps.create.outputs.id
+        outputs:
+          method: $method
+          url: $url
+    outputs:
+      id: $steps.create.outputs.id

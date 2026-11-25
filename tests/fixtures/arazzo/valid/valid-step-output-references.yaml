@@ -1,0 +1,25 @@
+arazzo: 1.1.0
+info:
+  title: Valid Step Output References
+  version: 1.0.0
+sourceDescriptions:
+  - name: widgets
+    url: ./widgets.yaml
+    type: openapi
+workflows:
+  - workflowId: create-and-read-widget
+    outputs:
+      widgetId: $steps.read.outputs.widgetId
+    steps:
+      - stepId: create
+        operationId: widgets.create
+        outputs:
+          widget.id: $response.body#/id
+      - stepId: read
+        operationId: widgets.read
+        parameters:
+          - name: id
+            in: path
+            value: $steps.create.outputs.widget.id
+        outputs:
+          widgetId: $response.body#/id

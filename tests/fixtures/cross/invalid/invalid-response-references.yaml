@@ -1,0 +1,24 @@
+arazzo: 1.1.0
+info:
+  title: Invalid response references
+  version: 1.0.0
+sourceDescriptions:
+  - name: widgets
+    url: ../valid/responses-openapi.yaml
+    type: openapi
+workflows:
+  - workflowId: create-widget
+    steps:
+      - stepId: create
+        operationId: widgets.create
+        successCriteria:
+          - condition: $statusCode == 201
+          - condition: $statusCode == 202
+        onFailure:
+          - name: invalid
+            type: end
+            criteria:
+              - condition: $statusCode == 404
+        outputs:
+          missingHeader: $response.header.X-Missing
+          missingBody: $response.body#/missing

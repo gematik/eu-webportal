@@ -1,0 +1,28 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--portal-surface);
+  color: var(--portal-text);
+  font-family: var(--portal-font);
+  line-height: 1.5;
+}
+:root {
+  color-scheme: light;
+  --portal-primary: #000e52;
+  --portal-accent: #00ef8b;
+  --portal-text: #17191c;
+  --portal-muted: #505665;
+  --portal-surface: #fff;
+  --portal-footer: #e9eef5;
+  --portal-border: #8d96ad;
+  --portal-link: #24599b;
+  --portal-disabled: #d5e0ee;
+  --portal-error: #a51d2d;
+  --portal-content-width: 50rem;
+  --portal-font: system-ui, sans-serif;
+}

@@ -1,0 +1,30 @@
+arazzo: 1.1.0
+info:
+  title: Unsupported criterion features
+  version: 1.0.0
+sourceDescriptions:
+  - name: widgets
+    url: ./widgets.yaml
+    type: openapi
+workflows:
+  - workflowId: criterion-features
+    steps:
+      - stepId: list
+        operationId: widgets.list
+        successCriteria:
+          - context: $response.body
+            condition: $.items
+            type: jsonpath
+          - condition: '^ready$'
+            type:
+              type: regex
+              version: ecma-262
+          - condition: ready
+            type: custom
+        onFailure:
+          - name: stop
+            type: end
+            criteria:
+              - context: $response.body
+                condition: /items
+                type: xpath

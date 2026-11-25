@@ -1,0 +1,22 @@
+openapi: 3.1.0
+info:
+  title: Secured widgets
+  version: 1.0.0
+components:
+  securitySchemes:
+    mTLS:
+      type: mutualTLS
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key
+security:
+  - mTLS: []
+  - ApiKeyAuth: []
+paths:
+  /widgets:
+    get:
+      operationId: widgets.list
+      responses:
+        '200':
+          description: Widgets found

@@ -1,0 +1,7 @@
+<ism-application
+  countries-url="ism/countries.json"
+  [attr.flag-display]="flagDisplay"
+  [attr.country]="country()"
+  (country-change)="onCountryChange($event)"
+  (search-cancel)="onSearchCancel()"
+></ism-application>
