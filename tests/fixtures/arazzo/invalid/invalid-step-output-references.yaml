@@ -1,0 +1,30 @@
+arazzo: 1.1.0
+info:
+  title: Invalid Step Output References
+  version: 1.0.0
+sourceDescriptions:
+  - name: widgets
+    url: ./widgets.yaml
+    type: openapi
+workflows:
+  - workflowId: invalid-references
+    steps:
+      - stepId: create
+        operationId: widgets.create
+        parameters:
+          - name: unknown
+            in: query
+            value: $steps.missing.outputs.id
+          - name: forward
+            in: query
+            value: $steps.read.outputs.id
+        outputs:
+          id: $response.body#/id
+      - stepId: read
+        operationId: widgets.read
+        parameters:
+          - name: id
+            in: path
+            value: $steps.create.outputs.missing
+        outputs:
+          id: $response.body#/id

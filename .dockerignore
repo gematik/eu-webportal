@@ -1,0 +1,16 @@
+.git
+.idea
+node_modules
+__pycache__
+**/__pycache__
+*.pyc
+docs
+tests
+webapp
+openapi
+arazzo
+specs
+reports
+frontend/ism/internal
+frontend/public/ism
+frontend/public/ism-demo

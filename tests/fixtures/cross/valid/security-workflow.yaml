@@ -1,0 +1,13 @@
+arazzo: 1.1.0
+info:
+  title: Secured workflow
+  version: 1.0.0
+sourceDescriptions:
+  - name: widgets
+    url: ./security-openapi.yaml
+    type: openapi
+workflows:
+  - workflowId: list-widgets
+    steps:
+      - stepId: list
+        operationId: widgets.list

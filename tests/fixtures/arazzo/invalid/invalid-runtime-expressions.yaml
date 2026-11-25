@@ -1,0 +1,27 @@
+arazzo: 1.1.0
+info:
+  title: Invalid runtime expressions
+  version: 1.0.0
+sourceDescriptions:
+  - name: widgets
+    url: ./widgets.yaml
+    type: openapi
+workflows:
+  - workflowId: invalid-expressions
+    steps:
+      - stepId: create
+        operationId: widgets.create
+        parameters:
+          - name: missing-input
+            in: query
+            value: $inputs.
+          - name: secret
+            in: header
+            value: $environment.SECRET
+          - name: template
+            in: query
+            value: "prefix-{$inputs.locale"
+        outputs:
+          missingStep: $steps..outputs.id
+          invalidPointer: $response.body#/item~2id
+          missingHeader: $response.header.

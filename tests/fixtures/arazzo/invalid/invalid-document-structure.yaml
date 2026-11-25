@@ -1,0 +1,15 @@
+arazzo: 1.1.0
+info:
+  title: ""
+  version: 1
+sourceDescriptions:
+  - name: duplicate
+    url: ./source-a.yaml
+    type: asyncapi
+  - name: duplicate
+    url: ""
+    type: arazzo
+  - name: unknown
+    url: ./source-c.yaml
+    type: custom
+workflows: []

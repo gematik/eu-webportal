@@ -1,0 +1,9 @@
+openapi:
+  - tests/fixtures/cross/valid/parameters-openapi.yaml
+arazzo:
+  - tests/fixtures/cross/valid/parameters-workflow.yaml
+security:
+  allowedRefRoots:
+    - tests/fixtures/cross
+mock:
+  packageVersion: 1.0.0

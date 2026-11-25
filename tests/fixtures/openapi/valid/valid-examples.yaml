@@ -1,0 +1,39 @@
+openapi: 3.1.0
+info:
+  title: Valid Examples API
+  version: 1.0.0
+components:
+  examples:
+    Widget:
+      summary: Widget example
+      value:
+        id: widget-1
+  parameters:
+    Query:
+      name: query
+      in: query
+      examples:
+        named:
+          value: active
+      schema:
+        type: string
+paths:
+  /widgets:
+    post:
+      operationId: createWidget
+      requestBody:
+        content:
+          application/json:
+            examples:
+              first:
+                value:
+                  name: First
+              external:
+                externalValue: ./examples/widget.json
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              example:
+                id: widget-1

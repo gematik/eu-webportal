@@ -1,0 +1,38 @@
+openapi: 3.1.0
+info:
+  title: Valid Security API
+  version: 1.0.0
+components:
+  securitySchemes:
+    MutualTls:
+      type: mutualTLS
+    ApiKey:
+      type: apiKey
+      name: X-API-Key
+      in: header
+    Bearer:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    OAuth:
+      type: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: https://auth.example.test/token
+          scopes:
+            widgets.read: Read widgets
+security:
+  - MutualTls: []
+  - ApiKey: []
+    Bearer: []
+  - OAuth:
+      - widgets.read
+paths:
+  /widgets:
+    get:
+      operationId: listWidgets
+      security:
+        - ApiKey: []
+      responses:
+        '200':
+          description: OK

@@ -1,0 +1,38 @@
+arazzo: 1.1.0
+info:
+  title: Valid Actions
+  version: 1.0.0
+sourceDescriptions:
+  - name: widgets
+    url: ./widgets.yaml
+    type: openapi
+workflows:
+  - workflowId: retry-create
+    steps:
+      - stepId: create
+        operationId: widgets.create
+        onFailure:
+          - name: retry-server-error
+            criteria:
+              - condition: $statusCode == 500
+            type: retry
+            retryAfter: 1.5
+            retryLimit: 3
+          - name: continue-with-list
+            type: goto
+            stepId: list
+      - stepId: list
+        operationId: widgets.list
+        onSuccess:
+          - name: finish-workflow
+            type: goto
+            workflowId: completed
+          - name: finish
+            type: end
+  - workflowId: completed
+    steps:
+      - stepId: complete
+        operationId: widgets.complete
+        onSuccess:
+          - name: finish
+            type: end

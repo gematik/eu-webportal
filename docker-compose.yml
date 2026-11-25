@@ -1,0 +1,20 @@
+services:
+  tool:
+    build: .
+    read_only: true
+    user: "10001:10001"
+    working_dir: /workspace
+    environment:
+      PYTHONDONTWRITEBYTECODE: "1"
+      HOME: /tmp
+    volumes:
+      - ${SPECS_PATH:-./specs}:/workspace/specs:ro
+      - ./arazzo:/workspace/workflows:ro
+      - ${TESTS_PATH:-./tests}:/workspace/tests:ro
+      - ${EXAMPLES_PATH:-./tests/fixtures}:/workspace/examples:ro
+      - ./tools:/workspace/config:ro
+      - ./reports:/workspace/reports
+    tmpfs:
+      - /tmp
+    entrypoint: ["python", "-m", "tools.openapi_arazzo_tool.cli"]
+    command: ["--help"]

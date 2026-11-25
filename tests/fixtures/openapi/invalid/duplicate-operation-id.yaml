@@ -1,0 +1,28 @@
+openapi: 3.1.0
+info:
+  title: Duplicate Operation ID API
+  version: 1.0.0
+paths:
+  /widgets:
+    get:
+      operationId: listWidgets
+      responses:
+        '200':
+          description: OK
+    post:
+      operationId: listWidgets
+      responses:
+        '201':
+          description: Created
+  /widgets/{id}:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      operationId: getWidget
+      responses:
+        '200':
+          description: OK

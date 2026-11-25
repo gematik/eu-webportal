@@ -1,0 +1,4 @@
+components:
+  schemas:
+    B:
+      $ref: './c.yaml#/components/schemas/C'

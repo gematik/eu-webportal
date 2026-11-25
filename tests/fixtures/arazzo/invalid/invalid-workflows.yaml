@@ -1,0 +1,30 @@
+arazzo: 1.1.0
+info:
+  title: Invalid Workflows
+  version: 1.0.0
+sourceDescriptions:
+  - name: petstore
+    url: ./petstore.yaml
+    type: openapi
+workflows:
+  - workflowId: duplicate
+    steps:
+      - stepId: duplicate-step
+        operationId: petstore.listPets
+      - stepId: duplicate-step
+        operationPath: /pets
+      - stepId: no-selector
+      - stepId: both-selectors
+        operationId: petstore.createPet
+        operationPath: /pets
+      - stepId: unsupported-selector
+        operationRef: ./petstore.yaml#/paths/~1pets/get
+      - stepId: asyncapi-channel
+        channelPath: $sourceDescriptions.events#/channels/widgets
+        action: receive
+      - stepId: workflow-invocation
+        workflowId: other-workflow
+  - workflowId: duplicate
+    steps: invalid
+  - workflowId: ""
+    steps: []

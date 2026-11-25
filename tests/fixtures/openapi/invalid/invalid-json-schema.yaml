@@ -1,0 +1,9 @@
+openapi: 3.1.0
+info:
+  title: Invalid JSON Schema API
+  version: 1.0.0
+paths: {}
+components:
+  schemas:
+    Widget:
+      type: invalid-json-schema-type

@@ -1,0 +1,55 @@
+openapi: 3.1.0
+info:
+  title: Invalid Parameter API
+  version: 1.0.0
+components:
+  parameters:
+    MissingName:
+      in: header
+      schema:
+        type: string
+paths:
+  /widgets/{widgetId}:
+    parameters:
+      - name: widgetId
+        in: path
+        required: false
+        schema:
+          type: string
+      - name: duplicate
+        in: query
+        schema:
+          type: string
+      - name: duplicate
+        in: query
+        schema:
+          type: string
+      - name: not-in-template
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      operationId: getWidget
+      parameters:
+        - name: unsupported-location
+          in: body
+          schema:
+            type: string
+        - name: ambiguous
+          in: query
+          schema:
+            type: string
+          content:
+            application/json:
+              schema:
+                type: string
+      responses:
+        '200':
+          description: OK
+  /missing/{identifier}:
+    get:
+      operationId: getMissing
+      responses:
+        '200':
+          description: OK

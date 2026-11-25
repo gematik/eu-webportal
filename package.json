@@ -1,0 +1,22 @@
+{
+  "name": "eu-webportal",
+  "version": "0.1.0",
+  "description": "EU-Webportal PoC",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "git@gitlab.prod.ccs.gematik.solutions:ncpeh/poc/eu-webportal.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "Apache-2.0",
+  "type": "module",
+  "private": "true",
+  "dependencies": {
+    "yaml": "^2.9.0"
+  }
+}

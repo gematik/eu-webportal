@@ -1,0 +1,7 @@
+components:
+  schemas:
+    NodeB:
+      type: object
+      properties:
+        parent:
+          $ref: './node-a.yaml#/components/schemas/Node'

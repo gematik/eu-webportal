@@ -1,0 +1,33 @@
+arazzo: 1.1.0
+info:
+  title: Invalid Control Flow
+  version: 1.0.0
+sourceDescriptions:
+  - name: widgets
+    url: ./widgets.yaml
+    type: openapi
+workflows:
+  - workflowId: self-loop
+    steps:
+      - stepId: repeat
+        operationId: widgets.create
+        onSuccess:
+          - name: repeat-forever
+            type: goto
+            stepId: repeat
+  - workflowId: first
+    steps:
+      - stepId: enter
+        operationId: widgets.create
+        onSuccess:
+          - name: move-second
+            type: goto
+            workflowId: second
+  - workflowId: second
+    steps:
+      - stepId: enter
+        operationId: widgets.create
+        onSuccess:
+          - name: move-first
+            type: goto
+            workflowId: first

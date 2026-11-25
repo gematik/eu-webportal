@@ -1,0 +1,8 @@
+openapi: 3.1.0
+info:
+  title: Chain Root With Unresolved Nested Ref
+  version: 1.0.0
+components:
+  schemas:
+    A:
+      $ref: './b-broken.yaml#/components/schemas/B'

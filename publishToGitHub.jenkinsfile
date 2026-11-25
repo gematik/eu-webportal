@@ -1,0 +1,7 @@
+@Library('gematik-jenkins-shared-library') _
+
+pipelineGitHubPublishSources {
+    GITHUB_PROJECT_NAME = 'eu-webportal'
+    GEMATIK_PROJECT_NAME = 'ncpeh/poc/eu-webportal.git'
+    REMOTE_BRANCH = 'main'
+}

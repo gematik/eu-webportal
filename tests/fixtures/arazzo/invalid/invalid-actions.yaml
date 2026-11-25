@@ -1,0 +1,53 @@
+arazzo: 1.1.0
+info:
+  title: Invalid Actions
+  version: 1.0.0
+sourceDescriptions:
+  - name: widgets
+    url: ./widgets.yaml
+    type: openapi
+workflows:
+  - workflowId: create-widget
+    steps:
+      - stepId: create
+        operationId: widgets.create
+        onFailure: invalid
+      - stepId: list
+        operationId: widgets.list
+        onFailure:
+          - name: invalid-retry
+            type: retry
+            criteria: []
+            retryAfter: -1
+            retryLimit: invalid
+        onSuccess:
+          - name: ""
+            type: unsupported
+          - name: empty-criteria
+            type: retry
+            criteria: []
+            retryAfter: -1
+            retryLimit: invalid
+          - name: missing-target
+            type: goto
+          - name: unknown-target
+            type: goto
+            stepId: absent
+          - name: too-many-targets
+            type: goto
+            stepId: create
+            workflowId: create-widget
+          - name: invalid-end
+            type: end
+            retryLimit: 1
+          - name: retry-on-success
+            type: retry
+          - name: action-parameters
+            type: goto
+            stepId: create
+            retryLimit: 1
+            parameters:
+              - name: value
+                value: example
+          - name: action-parameters
+            type: end

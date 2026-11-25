@@ -1,0 +1,28 @@
+FROM python:3.12-slim
+
+COPY --from=ghcr.io/astral-sh/uv:0.13.1 /uv /uvx /bin/
+
+ARG MOCK_PACKAGE_DIR
+ARG MOCK_PACKAGE_VERSION
+
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    HOME=/tmp
+
+WORKDIR /app
+COPY pyproject.toml uv.lock ./
+COPY tools ./tools
+RUN uv sync --locked --no-dev
+
+ENV PATH="/app/.venv/bin:$PATH"
+
+COPY ${MOCK_PACKAGE_DIR}/ /opt/mock-package/
+RUN python -c "from tools.openapi_arazzo_tool.mocking.package import load_mock_package; manifest, _ = load_mock_package('/opt/mock-package'); assert manifest['packageVersion'] == '${MOCK_PACKAGE_VERSION}', 'package version does not match image version'"
+
+LABEL org.opencontainers.image.version="${MOCK_PACKAGE_VERSION}"
+
+RUN useradd --create-home --uid 10001 tool
+USER tool
+WORKDIR /app
+
+ENTRYPOINT ["python", "-m", "tools.openapi_arazzo_tool.cli"]
+CMD ["start-mocks", "--package-dir", "/opt/mock-package"]

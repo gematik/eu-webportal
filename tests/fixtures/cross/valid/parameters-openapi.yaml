@@ -1,0 +1,48 @@
+openapi: 3.1.0
+info:
+  title: Parameter widgets
+  version: 1.0.0
+paths:
+  /widgets/{id}:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      operationId: widgets.read
+      parameters:
+        - name: locale
+          in: query
+          required: true
+          schema:
+            type: string
+            enum: [de-DE, en-US]
+        - name: page
+          in: query
+          schema:
+            type: integer
+            minimum: 1
+        - name: X-Trace-Id
+          in: header
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Widget found
+    post:
+      operationId: widgets.create
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [name]
+              properties:
+                name:
+                  type: string
+      responses:
+        '201':
+          description: Widget created

@@ -1,0 +1,20 @@
+arazzo: 1.1.0
+info:
+  title: Invalid parameters
+  version: 1.0.0
+sourceDescriptions:
+  - name: widgets
+    url: ../valid/parameters-openapi.yaml
+    type: openapi
+workflows:
+  - workflowId: invalid-parameters
+    steps:
+      - stepId: read
+        operationId: widgets.read
+        parameters:
+          - name: id
+            in: query
+            value: widget-1
+          - name: unknown
+            in: header
+            value: value

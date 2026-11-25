@@ -1,0 +1,4 @@
+components:
+  schemas:
+    B:
+      $ref: './does-not-exist.yaml#/components/schemas/DoesNotExist'

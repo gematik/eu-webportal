@@ -1,0 +1,41 @@
+.application-tiles {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 16rem), 1fr));
+  gap: 1rem;
+  padding: 0;
+  list-style: none;
+}
+
+.application-tile {
+  display: flex;
+  align-items: center;
+  min-height: 8rem;
+  height: 100%;
+  padding: 1.5rem;
+  border: 1px solid var(--portal-border);
+  border-radius: 0.5rem;
+  background: var(--portal-surface);
+  color: var(--portal-primary);
+  font-weight: 600;
+  text-decoration: none;
+
+  &:any-link:hover {
+    border-color: var(--portal-primary);
+    text-decoration: underline;
+  }
+
+  &:focus-visible {
+    outline: 0.2rem solid var(--portal-primary);
+    outline-offset: 0.2rem;
+  }
+}
+.application-tiles,
+:host {
+  color: var(--portal-primary);
+}
+
+:host {
+  display: block;
+  max-width: 75rem;
+  margin-inline: auto;
+}

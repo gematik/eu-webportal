@@ -1,0 +1,38 @@
+arazzo: 1.1.0
+info:
+  title: Invalid expression dependencies
+  version: 1.0.0
+sourceDescriptions:
+  - name: widgets
+    url: ../valid/openapi.yaml
+    type: openapi
+workflows:
+  - workflowId: shared
+    inputs:
+      type: object
+      properties:
+        locale:
+          type: string
+    steps:
+      - stepId: list
+        operationId: widgets.list
+    outputs:
+      result: $statusCode
+  - workflowId: consumer
+    inputs:
+      type: object
+      properties:
+        locale:
+          type: string
+    steps:
+      - stepId: list
+        operationId: widgets.list
+        parameters:
+          - name: missing
+            in: query
+            value: $inputs.missing
+        outputs:
+          missingCurrentOutput: $outputs.missing
+          missingWorkflow: $workflows.absent.outputs.result
+          missingWorkflowInput: $workflows.shared.inputs.missing
+          missingWorkflowOutput: $workflows.shared.outputs.missing

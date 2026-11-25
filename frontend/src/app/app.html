@@ -1,0 +1,60 @@
+<a class="skip-link" href="#main-content">Zum Inhalt springen</a>
+
+<header class="portal-header">
+  <a class="portal-name" routerLink="/" aria-label="EU-Webportal – Startseite" (click)="closeMenu()"
+    ><img class="portal-logo" src="Gematik_Logo_Flag.png" alt="gematik"
+  /></a>
+  <nav aria-label="Hauptnavigation">
+    <details class="application-menu" #applicationMenu>
+      <summary aria-label="Fachliche Anwendungen">
+        <span class="burger-icon" aria-hidden="true"><span></span><span></span><span></span></span>
+      </summary>
+      <ul class="application-menu-list">
+        @for (application of applications; track application.name) {
+          <li>
+            @if (application.route; as route) {
+              <a
+                [routerLink]="route"
+                routerLinkActive="active"
+                ariaCurrentWhenActive="page"
+                (click)="closeMenu()"
+                >{{ application.name }}</a
+              >
+            } @else {
+              <span class="unavailable-application" aria-disabled="true">
+                {{ application.name }} <small>Noch nicht verfügbar</small>
+              </span>
+            }
+          </li>
+        }
+      </ul>
+    </details>
+    <a
+      class="search-link"
+      routerLink="/patientensuche"
+      aria-label="Patientensuche öffnen"
+      (click)="closeMenu()"
+    >
+      <svg
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        aria-hidden="true"
+      >
+        <circle cx="10" cy="10" r="7" />
+        <path d="m15 15 6 6" />
+      </svg>
+    </a>
+  </nav>
+</header>
+
+<main id="main-content" tabindex="-1">
+  <router-outlet />
+</main>
+
+<footer class="portal-footer">
+  <span class="footer-copyright">© gematik GmbH {{ currentYear }}</span>
+  <span>Beispielimplementierung</span>
+  <span class="footer-demonstrator">MVP1 · ISM-Demonstrator</span>
+</footer>

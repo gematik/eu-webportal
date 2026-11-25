@@ -1,0 +1,23 @@
+arazzo: 1.1.0
+info:
+  title: Invalid Step Timeout
+  version: 1.0.0
+sourceDescriptions:
+  - name: widgets
+    url: ./widgets.yaml
+    type: openapi
+workflows:
+  - workflowId: timed-widget
+    steps:
+      - stepId: negative
+        operationId: widgets.read
+        timeout: -1
+      - stepId: non-integer
+        operationId: widgets.read
+        timeout: 1.5
+      - stepId: boolean
+        operationId: widgets.read
+        timeout: true
+      - stepId: async-only
+        operationId: widgets.read
+        correlationId: $inputs.correlationId

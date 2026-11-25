@@ -1,0 +1,28 @@
+openapi: 3.1.0
+info:
+  title: Invalid Request Body API
+  version: 1.0.0
+components:
+  requestBodies:
+    MissingContent:
+      required: true
+    EmptyContent:
+      content: {}
+paths:
+  /widgets:
+    post:
+      operationId: createWidget
+      requestBody:
+        required: sometimes
+        content:
+          application/json: []
+      responses:
+        '201':
+          description: Created
+  /invalid:
+    post:
+      operationId: invalidBody
+      requestBody: []
+      responses:
+        '201':
+          description: Created

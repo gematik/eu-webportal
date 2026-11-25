@@ -1,0 +1,39 @@
+arazzo: 1.1.0
+$self: ./workflow.yaml
+unknownRoot: ignored-before
+info:
+  title: Invalid fields
+  version: 1.0.0
+  typo: ignored-before
+sourceDescriptions:
+  - name: widgets
+    url: ./widgets.yaml
+    type: openapi
+    unexpected: ignored-before
+workflows:
+  - workflowId: invalid-fields
+    unknownWorkflow: ignored-before
+    steps:
+      - stepId: create
+        operationId: widgets.create
+        unknownStep: ignored-before
+        parameters:
+          - name: locale
+            in: query
+            value: de-DE
+            unknownParameter: ignored-before
+        requestBody:
+          contentType: application/json
+          payload:
+            name: Widget
+          replacements: []
+          unknownRequestBody: ignored-before
+        successCriteria:
+          - condition: $statusCode == 201
+            unknownCriterion: ignored-before
+        onFailure:
+          - name: stop
+            type: end
+            unknownAction: ignored-before
+    x-workflow-extension: retained
+x-root-extension: retained

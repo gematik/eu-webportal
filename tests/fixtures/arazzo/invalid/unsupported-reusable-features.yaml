@@ -1,0 +1,27 @@
+arazzo: 1.1.0
+info:
+  title: Unsupported Reusable Features
+  version: 1.0.0
+sourceDescriptions:
+  - name: widgets
+    url: ./widgets.yaml
+    type: openapi
+components:
+  parameters:
+    correlationId:
+      name: X-Correlation-Id
+      in: header
+      value: example
+workflows:
+  - workflowId: create-widget
+    steps:
+      - stepId: create
+        operationId: widgets.create
+        parameters:
+          - $ref: '#/components/parameters/correlationId'
+        onFailure:
+          - $ref: '#/components/failureActions/retry'
+        outputs:
+          widget:
+            type: jsonpath
+            expression: $.id
